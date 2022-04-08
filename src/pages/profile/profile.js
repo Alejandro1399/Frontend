@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Form } from "react-bootstrap"
+
 import './profile.scss'
 
 import NavBar from '../../components/NavBar/navbar'
+import useValidate from "../../hooks/useValidate";
+import { profileService } from "../../services/user.services";
 const Profile = () => {
+    useValidate()
+    const id = localStorage.getItem('token')
+    const [img, setImg] = useState(localStorage.getItem('img'))
+    const [name, setName] = useState(localStorage.getItem('name'))
+    const [role, setRole] = useState(localStorage.getItem('rol'))
+    const [email, setEmail] = useState(localStorage.getItem('email'))
+
+
+    const setSelectedFile = (imagen) => {
+        let reader = new FileReader(); //El objeto FileReader permite que las aplicaciones web lean ficheros
+        reader.onload = (event) => {
+            setImg(event.target.result)
+        };
+        reader.readAsDataURL(imagen);
+    }
+
+    const actualizar = () => {
+        profileService(id, name, email, role).then(user => {
+            localStorage.setItem('email', email)
+            localStorage.setItem('rol', role)
+            localStorage.setItem('img', img)
+            localStorage.setItem('name', name)
+        })
+    }
+
     return (
         <div className="profile">
             <NavBar />
@@ -19,19 +48,12 @@ const Profile = () => {
                                 <div className="card-body">
                                     <form>
                                         <div className="row mb-2">
-                                            <div className="col-auto"><img className="img_70_rounded_circle" alt="" src="https://www.un.org/sites/un2.un.org/files/user.png" /></div>
+                                            <div className="col-auto"><img className="img_70_rounded_circle" alt="" src={img ? (img) : ("https://www.un.org/sites/un2.un.org/files/user.png")} /></div>
                                             <div className="col">
-                                                <h3 className="mb-1">{"MarkJecno"}</h3>
-                                                <p className="mb-4">{"Designer"}</p>
+                                                <h3 className="mb-1">{`${name}`}</h3>
+                                                <p className="mb-4">{`Rol : ${role}`}</p>
+                                                <p className="mb-1">{`Correo : ${email}`}</p>
                                             </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <h6 className="form-label">{"Bio"}</h6>
-                                            <textarea className="form-control" rows="5" defaultValue="On the other hand, we denounce with righteous indignation" />
-                                        </div>
-                                        <div className="form-group">
-                                            <label className="form-label">{"EmailAddress"}</label>
-                                            <input className="form-control" placeholder="your-email@domain.com" />
                                         </div>
                                     </form>
                                 </div>
@@ -45,29 +67,37 @@ const Profile = () => {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="col-auto"><img className="img_70_rounded_circle" alt="" src="https://www.un.org/sites/un2.un.org/files/user.png" /></div>
-                                        <div className="col-sm-3 col-md-3">
+                                        <div className="col-auto">
+                                            <img className="img_70_rounded_circle" alt="" src={img ? (img) : ("https://www.un.org/sites/un2.un.org/files/user.png")} />
+                                            <input
+                                                type="file"
+                                                accept="image/jpg, image/png, image/jpeg"
+                                                onChange={(e) => setSelectedFile(e.target.files[0])} />
+                                        </div>
+                                        <div className="col-sm-6 col-md-6">
                                             <div className="form-group">
                                                 <label className="form-label">{"Nombre"}</label>
-                                                <input className="form-control" type="text" placeholder="Username" />
+                                                <input className="form-control" type="text" placeholder="Username" onChange={e => setName(e.target.value)} />
                                             </div>
                                         </div>
-                                        <div className="col-sm-3 col-md-4">
+                                        <div className="col-sm-6 col-md-6">
                                             <div className="form-group">
                                                 <label className="form-label">{"EmailAddress"}</label>
-                                                <input className="form-control" type="email" placeholder="Email" />
+                                                <input className="form-control" type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                                             </div>
                                         </div>
-                                        <div className="col-md-12">
-                                            <div className="form-group mb-0">
-                                                <label className="form-label">{"AboutMe"}</label>
-                                                <textarea className="form-control" rows="5" placeholder="Enter About your description"></textarea>
-                                            </div>
+                                        <div className="col-sm-6 col-md-6">
+                                            <label className="form-label">{"Rol"}</label>
+                                            <Form.Select aria-label="Default select example" onChange={e => setRole(e.target.value)} >
+                                                <option value={localStorage.getItem('rol')} >Seleccione</option>
+                                                <option value="Administrador">Administrador</option>
+                                                <option value="Operario">Operario</option>
+                                            </Form.Select>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="card-footer text-right">
-                                    <button className="btn btn-primary" type="submit">{"UpdateProfile"}</button>
+                                    <button className="btn btn-primary" type="button" onClick={actualizar}>Actualizar</button>
                                 </div>
                             </form>
                         </div>

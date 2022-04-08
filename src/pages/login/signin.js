@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { login } from "../../services/user.services"
 import 'react-toastify/dist/ReactToastify.css';
-
 import './signin.scss'
 
 const Signin = () => {
-
-
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("prueba@gmail.com");
+    const [password, setPassword] = useState("123456");
 
     const handleClickLogin = () => {
-        //Todo logear 
-        console.log("bien")
-      };
+        login(email, password)
+            .then(user => {
+                if (user.token) {
+                    localStorage.setItem('token', user._id)
+                    localStorage.setItem('email', email)
+                    localStorage.setItem('rol', user.role)
+                    localStorage.setItem('img', user.img.data)
+                    localStorage.setItem('name', user.name)
+
+                    window.location.href = `${process.env.PUBLIC_URL}/home`
+                    return user;
+                }
+                else {
+                    toast.error("Oppss .. El usuario o la contraseña son incorrectos.");
+                }
+            })
+    };
 
 
     return (
-        <div className ="signin">
+        <div className="signin">
             <div className="page-wrapper">
                 <div className="container-fluid p-0">
                     {/* <!-- login page start--> */}
@@ -53,6 +65,7 @@ const Signin = () => {
                                                             name="password"
                                                             value={password}
                                                             onChange={(e) => setPassword(e.target.value)}
+                                                            placeholder="**********"
                                                         />
                                                     </div>
                                                     <div className="form-group form-row mt-3 mb-0 button-auth">
@@ -76,6 +89,7 @@ const Signin = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

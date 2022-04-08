@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from "./pages/home/home";
 import Signin from './pages/login/signin'
 import Profile from "./pages/profile/profile";
+import Modify from './pages/modify/modify';
 import Error404 from './pages/error404';
 import Task from './pages/task/task';
 import ReactDOM from 'react-dom';
@@ -10,6 +11,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Task_list from './pages/list/task_list';
+import Createuser from './pages/createuser/createuser';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -18,9 +21,10 @@ ReactDOM.render(
         <Route path="/login" element={<Signin />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/task" element={<Task/>} />
-        <Route path="/taskedit" element={<Profile />} />
-        <Route path="/tasklist" element={<Profile />} />
+        <Route path="/task" element={<Task />} />
+        <Route path="/taskedit/:id" element={<Modify />} />
+        <Route path="/tasklist" element={<Task_list />} />
+        <Route path="/createuser" element={<Createuser />} />
         <Route path='*' exact={true} element={<Error404 />} />
 
       </Routes>

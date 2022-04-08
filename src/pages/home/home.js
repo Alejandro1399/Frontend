@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import NavBar from "../../components/NavBar/navbar";
 import { Container, Row, Col, Card, CardHeader, CardBody, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import useValidate from "../../hooks/useValidate";
 const Home = () => {
     const [activeTab, setActiveTab] = useState('1');
+
+    useValidate()
     return (
         <div>
             <NavBar />
@@ -32,11 +35,6 @@ const Home = () => {
                                             </NavLink>
                                         </NavItem>
                                         <NavItem>
-                                            <NavLink className={activeTab === '4' ? 'active' : ''} onClick={() => setActiveTab('4')}>
-                                                {"Modificar de tareas"}
-                                            </NavLink>
-                                        </NavItem>
-                                        <NavItem>
                                             <NavLink className={activeTab === '5' ? 'active' : ''} onClick={() => setActiveTab('5')}>
                                                 {"Lista de tareas"}
                                             </NavLink>
@@ -52,11 +50,8 @@ const Home = () => {
                                         <TabPane tabId="3">
                                             <p className="mb-0">{"El Usuario administrador tendra permiso para crear y asignar tareas a los usuarios operarios"}</p>
                                         </TabPane>
-                                        <TabPane tabId="4">
-                                            <p className="mb-0">{"El Usuario ya sea administrador u operario podra modificar el estado de una tarea ya sea de To do, In Progress, Done "}</p>
-                                        </TabPane>
                                         <TabPane tabId="5">
-                                            <p className="mb-0">{"El Usuario administrador podra ver todas las tareas que existen en la base de datos mientras que el operario solo podra ver las tareas asignadas a el"}</p>
+                                            <p className="mb-0">{"El Usuario administrador podra ver todas las tareas que existen en la base de datos mientras que el operario solo podra ver las tareas asignadas a el; ademas de esto El Usuario ya sea administrador u operario podra modificar el estado de una tarea ya sea de To do, In Progress, Done "}</p>
                                         </TabPane>
                                     </TabContent>
                                 </div>

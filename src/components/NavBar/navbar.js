@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from "../../pages/home/home"
 
 const NavBar = () => {
-
+    const rol = localStorage.getItem('rol');
     return (
         <Navbar bg="light" expand="lg">
             <Container>
@@ -15,8 +15,13 @@ const NavBar = () => {
 
                         <Nav.Link href="/home">Home</Nav.Link>
                         <Nav.Link href="/profile">Editar usuario</Nav.Link>
-                        <Nav.Link href="/task">Asignacion de tareas</Nav.Link>
-                        <Nav.Link href="/taskedit">Modificar de tareas</Nav.Link>
+                        {rol == "Administrador" ? (
+                            <>
+                                <Nav.Link href="/createuser">Registrar usuario</Nav.Link>
+                                <Nav.Link href="/task">Asignacion de tareas</Nav.Link>
+
+                            </>) : (<></>)
+                        }
                         <Nav.Link href="/tasklist">Lista de tareas</Nav.Link>
 
 
