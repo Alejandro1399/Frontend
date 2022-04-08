@@ -1,0 +1,15 @@
+.signin{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    .container-fluid{
+        width: 800px;
+    }
+
+    @media screen and (max-width: 960px){
+        .container-fluid{
+            width: 100vw;
+        }
+    }
+}
